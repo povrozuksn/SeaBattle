@@ -27,7 +27,23 @@ struct Ship
     }
 };
 
+struct Torpeda
+{
+   int x;
+   int y;
+   int w;
+   int h;
+   HDC image;
+   bool visible;
 
+    void draw()
+    {
+        if (visible)
+        {
+            Win32::TransparentBlt(txDC(), x, y, 25, 100, image, 0, 0, w, h, TX_WHITE);
+        }
+    }
+};
 
 int main()
 {
@@ -38,6 +54,7 @@ HDC fon = txLoadImage("Pictures/Sea.bmp");
 
 Submarine sub = {300, txLoadImage("Pictures/sub.bmp")};
 Ship ship1 = {-150, 230, 300, 93, 100, 31, txLoadImage("Pictures/ship.bmp")};
+Torpeda torpeda = {400, 400, 25, 100, txLoadImage("Pictures/torpeda.bmp"), false};
 
 
     while(!GetAsyncKeyState(VK_ESCAPE))
@@ -51,6 +68,7 @@ Ship ship1 = {-150, 230, 300, 93, 100, 31, txLoadImage("Pictures/ship.bmp")};
         txBitBlt(txDC(), 0, 0, 800, 600, fon);
         sub.draw();
         ship1.draw();
+        torpeda.draw();
 
         if(GetAsyncKeyState(VK_RIGHT))
         {
@@ -63,6 +81,10 @@ Ship ship1 = {-150, 230, 300, 93, 100, 31, txLoadImage("Pictures/ship.bmp")};
 
         ship1.x += 2;
 
+        if(GetAsyncKeyState(VK_SPACE))
+        {
+            torpeda.visible = true;
+        }
 
 
         txEnd();
