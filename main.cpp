@@ -20,10 +20,14 @@ struct Ship
    int w_scr;
    int h_scr;
    HDC image;
+   bool visible;
 
     void draw()
     {
-        Win32::TransparentBlt(txDC(), x, y, w_scr, h_scr, image, 0, 0, w, h, TX_WHITE);
+        if (visible)
+        {
+            Win32::TransparentBlt(txDC(), x, y, w_scr, h_scr, image, 0, 0, w, h, TX_WHITE);
+        }
     }
 };
 
@@ -35,6 +39,7 @@ struct Torpeda
    int h;
    HDC image;
    bool visible;
+   int v;
 
     void draw()
     {
@@ -53,8 +58,8 @@ txTextCursor (false);
 HDC fon = txLoadImage("Pictures/Sea.bmp");
 
 Submarine sub = {300, txLoadImage("Pictures/sub.bmp")};
-Ship ship1 = {-150, 230, 300, 93, 100, 31, txLoadImage("Pictures/ship.bmp")};
-Torpeda torpeda = {400, 400, 25, 100, txLoadImage("Pictures/torpeda.bmp"), false};
+Ship ship1 = {-150, 230, 300, 93, 100, 31, txLoadImage("Pictures/ship.bmp"), true};
+Torpeda torpeda = {sub.x+100, 560, 25, 100, txLoadImage("Pictures/torpeda.bmp"), false, 0};
 
 
     while(!GetAsyncKeyState(VK_ESCAPE))
@@ -66,9 +71,9 @@ Torpeda torpeda = {400, 400, 25, 100, txLoadImage("Pictures/torpeda.bmp"), false
         txSetFillColor (TX_BLACK);
 
         txBitBlt(txDC(), 0, 0, 800, 600, fon);
-        sub.draw();
         ship1.draw();
         torpeda.draw();
+        sub.draw();
 
         if(GetAsyncKeyState(VK_RIGHT))
         {
@@ -83,8 +88,32 @@ Torpeda torpeda = {400, 400, 25, 100, txLoadImage("Pictures/torpeda.bmp"), false
 
         if(GetAsyncKeyState(VK_SPACE))
         {
+            torpeda.x = sub.x+100;
             torpeda.visible = true;
+            torpeda.v = 5;
         }
+
+        torpeda.y = torpeda.y - torpeda.v;
+
+        if(torpeda.y < -200)
+        {
+            torpeda.visible = false;
+            torpeda.v = 0;
+            torpeda.y = 560;
+        }
+
+
+        if( torpeda.x>ship1.x && torpeda.x+25<ship1.x+ship1.w_scr &&
+            torpeda.y<ship1.y+ship1.h_scr)
+        {
+            torpeda.visible = false;
+            ship1.visible = false;
+            torpeda.v = 0;
+            torpeda.y = 560;
+        }
+
+
+
 
 
         txEnd();
