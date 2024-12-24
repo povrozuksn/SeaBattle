@@ -50,10 +50,44 @@ struct Torpeda
     }
 };
 
+struct Button
+{
+    int x;
+    int y;
+    int w;
+    int h;
+    const char* text;
+    bool visible;
+
+    void draw()
+    {
+        txSetColor (TX_WHITE, 3);
+        txSetFillColor (TX_YELLOW);
+        Win32::RoundRect (txDC(), x, y, x+w, y+h, 30, 30);
+        txSelectFont("Times New Roman", 30);
+        txSetColor (TX_RED);
+        txDrawText(x, y, x+w, y+h, text);
+    }
+
+    bool click()
+    {
+        return(txMouseX()>x && txMouseX()<x+w &&
+                txMouseY()>y && txMouseY()<y+h &&
+                txMouseButtons() == 1 && visible);
+    }
+};
+
 int main()
 {
 txCreateWindow (800, 600);
 txTextCursor (false);
+
+string PAGE = "menu";
+
+Button btn0 = {100, 100, 200, 40, "Старт", true};
+Button btn1 = {100, 150, 200, 40, "Правила игры", true};
+Button btn2 = {100, 200, 200, 40, "Выход", true};
+Button btn3 = {0, 0, 200, 40, "Назад", true};
 
 HDC fon = txLoadImage("Pictures/Sea.bmp");
 
@@ -62,58 +96,97 @@ Ship ship1 = {-150, 230, 300, 93, 100, 31, txLoadImage("Pictures/ship.bmp"), tru
 Torpeda torpeda = {sub.x+100, 560, 25, 100, txLoadImage("Pictures/torpeda.bmp"), false, 0};
 
 
-    while(!GetAsyncKeyState(VK_ESCAPE))
+    while(!btn2.click())
     {
 
         txBegin();
         txClear();
 
-        txSetFillColor (TX_BLACK);
-
-        txBitBlt(txDC(), 0, 0, 800, 600, fon);
-        ship1.draw();
-        torpeda.draw();
-        sub.draw();
-
-        if(GetAsyncKeyState(VK_RIGHT))
+        if(PAGE == "menu")
         {
-            sub.x += 5;
-        }
-        if(GetAsyncKeyState(VK_LEFT))
-        {
-            sub.x -= 5;
-        }
+            btn0.draw();
+            btn1.draw();
+            btn2.draw();
 
-        ship1.x += 2;
+            btn2.visible = true;
 
-        if(GetAsyncKeyState(VK_SPACE))
-        {
-            torpeda.x = sub.x+100;
-            torpeda.visible = true;
-            torpeda.v = 5;
+            if(btn0.click())
+            {
+                PAGE = "game";
+            }
+
+            if(btn1.click())
+            {
+                PAGE = "rules";
+            }
+
+            txSetFillColor (TX_BLACK);
         }
 
-        torpeda.y = torpeda.y - torpeda.v;
-
-        if(torpeda.y < -200)
+        if(PAGE == "rules")
         {
-            torpeda.visible = false;
-            torpeda.v = 0;
-            torpeda.y = 560;
+            btn3.draw();
+            if(btn3.click())
+            {
+                PAGE = "menu";
+            }
+            btn2.visible = false;
+
+            txSetFillColor (TX_YELLOW);
         }
 
-
-        if( torpeda.x>ship1.x && torpeda.x+25<ship1.x+ship1.w_scr &&
-            torpeda.y<ship1.y+ship1.h_scr)
+        if(PAGE == "game")
         {
-            torpeda.visible = false;
-            ship1.visible = false;
-            torpeda.v = 0;
-            torpeda.y = 560;
+            txBitBlt(txDC(), 0, 0, 800, 600, fon);
+            ship1.draw();
+            torpeda.draw();
+            sub.draw();
+
+            if(GetAsyncKeyState(VK_RIGHT))
+            {
+                sub.x += 5;
+            }
+            if(GetAsyncKeyState(VK_LEFT))
+            {
+                sub.x -= 5;
+            }
+
+            ship1.x += 2;
+
+            if(GetAsyncKeyState(VK_SPACE))
+            {
+                torpeda.x = sub.x+100;
+                torpeda.visible = true;
+                torpeda.v = 5;
+            }
+
+            torpeda.y = torpeda.y - torpeda.v;
+
+            if(torpeda.y < -200)
+            {
+                torpeda.visible = false;
+                torpeda.v = 0;
+                torpeda.y = 560;
+            }
+
+            if( torpeda.x>ship1.x && torpeda.x+25<ship1.x+ship1.w_scr &&
+                torpeda.y<ship1.y+ship1.h_scr)
+            {
+                torpeda.visible = false;
+                ship1.visible = false;
+                torpeda.v = 0;
+                torpeda.y = 560;
+            }
+
+            btn3.draw();
+            if(btn3.click())
+            {
+                PAGE = "menu";
+            }
+            btn2.visible = false;
+
+            txSetFillColor (TX_BLACK);
         }
-
-
-
 
 
         txEnd();
