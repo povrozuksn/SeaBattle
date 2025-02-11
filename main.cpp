@@ -37,6 +37,8 @@ struct Torpeda
    int y;
    int w;
    int h;
+   float w_;
+   float h_;
    HDC image;
    bool visible;
    int v;
@@ -45,7 +47,7 @@ struct Torpeda
     {
         if (visible)
         {
-            Win32::TransparentBlt(txDC(), x, y, 25, 100, image, 0, 0, w, h, TX_WHITE);
+            Win32::TransparentBlt(txDC(), x, y, w_, h_, image, 0, 0, w, h, TX_WHITE);
         }
     }
 };
@@ -94,7 +96,7 @@ HDC fon = txLoadImage("Pictures/Sea.bmp");
 
 Submarine sub = {300, txLoadImage("Pictures/sub.bmp")};
 Ship ship1 = {-150, 230, 300, 93, 100, 31, txLoadImage("Pictures/ship.bmp"), true};
-Torpeda torpeda = {sub.x+100, 560, 25, 100, txLoadImage("Pictures/torpeda.bmp"), false, 0};
+Torpeda torpeda = {sub.x+100, 560, 25, 100, 25, 100, txLoadImage("Pictures/torpeda.bmp"), false, 0};
 
 
     while(!btn2.click())
@@ -179,11 +181,17 @@ Torpeda torpeda = {sub.x+100, 560, 25, 100, txLoadImage("Pictures/torpeda.bmp"),
                 torpeda.x = sub.x+100;
                 torpeda.visible = true;
                 torpeda.v = 5;
+                torpeda.w_ = 25;
+                torpeda.h_ = 100;
+            }
+            if(torpeda.v != 0)
+            {
+                torpeda.y = torpeda.y - torpeda.v;
+                torpeda.w_ -= 0.1;
+                torpeda.h_ -= 1;
             }
 
-            torpeda.y = torpeda.y - torpeda.v;
-
-            if(torpeda.y < -200)
+            if(torpeda.y < 250)
             {
                 torpeda.visible = false;
                 torpeda.v = 0;

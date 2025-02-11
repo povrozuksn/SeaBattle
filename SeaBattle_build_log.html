@@ -4,18 +4,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 <body>
 <tt>
-Build started on: <u>24-12-2024 at 18:50.39</u><br />
-Build ended on: <u>24-12-2024 at 18:50.44</u><p />
+Build started on: <u>11-02-2025 at 08:52.26</u><br />
+Build ended on: <u>11-02-2025 at 08:52.30</u><p />
 <b>-------------- Build: Debug in SeaBattle (compiler: GNU GCC Compiler)---------------</b><br />
-g++.bat -Wall -fexceptions  -g     -c C:\Users\root\source\repos\SeaBattle\main.cpp -o obj\Debug\main.o<br />
+g++.bat -Wall -fexceptions  -g     -c C:\Users\root\Desktop\ProjectGit\SeaBattle\main.cpp -o obj\Debug\main.o<br />
 ------------------------------------------------------------------------------------------------------<br />
-Compilation is OK<br />
+Compilation ERRORS:<br />
+<br />
+C:\Users\root\Desktop\ProjectGit\SeaBattle\main.cpp: In member function 'void Torpeda::draw()':<br />
+<font color="#0000ff">C:\Users\root\Desktop\ProjectGit\SeaBattle\main.cpp:50:84: warning: conversion to 'int' from 'float' may alter its value [-Wconversion]</font><br />
+             Win32::TransparentBlt(txDC(), x, y, w_, h_, image, 0, 0, w, h, TX_WHITE);<br />
+                                                                                    ^<br />
+<font color="#0000ff">C:\Users\root\Desktop\ProjectGit\SeaBattle\main.cpp:50:84: warning: conversion to 'int' from 'float' may alter its value [-Wconversion]</font><br />
+C:\Users\root\Desktop\ProjectGit\SeaBattle\main.cpp: In function 'int main()':<br />
+<font color="#0000ff">C:\Users\root\Desktop\ProjectGit\SeaBattle\main.cpp:190:28: warning: conversion to 'float' from 'double' may alter its value [-Wconversion]</font><br />
+                 torpeda.w_ -= 0.1;<br />
+                            ^<br />
 ------------------------------------------------------------------------------------------------------<br />
-Autosaving to the Git repository in C:/Users/root/source/repos/SeaBattle/.git-auto/... <br />
+Autosaving to the Git repository in C:/Users/root/Desktop/ProjectGit/SeaBattle/.git-auto/... <br />
 g++.exe  -o bin\Debug\SeaBattle.exe obj\Debug\main.o     -mwindows<br />
 Output size is 2,18 MB<br />
-<font color="#0000ff">Process terminated with status 0 (0 minutes, 5 seconds)</font><br />
-<font color="#0000ff">0 errors, 0 warnings (0 minutes, 5 seconds)</font><br />
+<font color="#0000ff">Process terminated with status 0 (0 minutes, 4 seconds)</font><br />
+<font color="#0000ff">0 errors, 3 warnings (0 minutes, 4 seconds)</font><br />
 </tt>
 </body>
 </html>
